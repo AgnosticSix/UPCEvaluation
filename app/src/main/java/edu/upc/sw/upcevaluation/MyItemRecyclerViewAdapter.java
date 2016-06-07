@@ -1,11 +1,14 @@
 package edu.upc.sw.upcevaluation;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.upc.sw.upcevaluation.ItemFragment.OnListFragmentInteractionListener;
 import edu.upc.sw.upcevaluation.dummy.DummyContent.DummyItem;
@@ -48,6 +51,40 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
+            }
+        });
+
+        holder.b0.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Has presionado el boton 0", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.b1.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Has presionado el boton 1", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.b2.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Has presionado el boton 2").setTitle("Notificacion");
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }
