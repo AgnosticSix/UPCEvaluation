@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.upc.sw.upcevaluation.ItemFragment.OnListFragmentInteractionListener;
@@ -61,12 +62,16 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mIdView;
         public final TextView mContentView;
         public DummyItem mItem;
+        public final ImageView b0, b1, b2;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
+            b0 = (ImageView) view.findViewById(R.id.ivBtn0);
+            b1 = (ImageView) view.findViewById(R.id.ivBtn1);
+            b2 = (ImageView) view.findViewById(R.id.ivBtn2);
         }
 
         @Override
