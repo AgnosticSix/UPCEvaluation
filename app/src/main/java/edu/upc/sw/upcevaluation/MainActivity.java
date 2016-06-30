@@ -13,8 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.*;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -50,27 +53,27 @@ public class MainActivity extends AppCompatActivity
         frm.beginTransaction().replace(R.id.container, new ItemFragment()).addToBackStack(null).commit();
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.google.com", new AsyncHttpResponseHandler() {
+        //RequestParams rp = new RequestParams();
+        //rp.put("params1", value1);
+        //rp.put("params2", value2);
+        client.get("http://192.168.1.100:81/generaJSON.json",null, new JsonHttpResponseHandler(){
 
-            @Override
-            public void onStart() {
-                // called before request is started
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONObject firstEvent = null;
+                try {
+                    firstEvent = response.getJSONObject("generaJSON.json");
+                    String jsonText = firstEvent.getString("text");
+
+                    // Do something with the response
+                    System.out.println(jsonText);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                // called when response HTTP status is "200 OK"
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-            }
-
-            @Override
-            public void onRetry(int retryNo) {
-                // called when request is retried
-            }
         });
     }
 
