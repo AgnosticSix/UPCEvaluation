@@ -1,3 +1,5 @@
+package edu.upc.sw.upcevaluation;
+
 /**
  * Created by AgnosticSix on 30/06/2016.
  */
@@ -8,6 +10,10 @@ public class Grupos {
 
 
     public Grupos(){
+
+    }
+
+    public Grupos(int id, String idAsignatura, String descripcion){
         this._id = id;
         this._idAsignatura = idAsignatura;
         this._descripcion = descripcion;
