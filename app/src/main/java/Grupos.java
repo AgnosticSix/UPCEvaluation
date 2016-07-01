@@ -7,7 +7,7 @@ public class Grupos {
     private String _descripcion;
 
 
-    public Grupos(int id, String idAsignatura, String descripcion){
+    public Grupos(){
         this._id = id;
         this._idAsignatura = idAsignatura;
         this._descripcion = descripcion;
@@ -36,4 +36,6 @@ public class Grupos {
     public void set_descripcion(String _descripcion) {
         this._descripcion = _descripcion;
     }
+
+
 }
