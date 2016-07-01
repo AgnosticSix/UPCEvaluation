@@ -1,5 +1,7 @@
 package edu.upc.sw.upcevaluation.dummy;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +18,7 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static List<DummyItem> ITEMS = new ArrayList<DummyItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -25,14 +27,17 @@ public class DummyContent {
 
     private static final int COUNT = 25;
 
+    /*
     static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
             addItem(createDummyItem(i));
         }
     }
+    */
 
-    private static void addItem(DummyItem item) {
+    public static void addItem(DummyItem item) {
+        Log.i("ADD", item.toString());
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }

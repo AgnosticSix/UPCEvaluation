@@ -1,9 +1,12 @@
 package edu.upc.sw.upcevaluation;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,13 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
 import com.loopj.android.http.*;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.entity.mime.Header;
+import edu.upc.sw.upcevaluation.dummy.DummyContent;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,28 +56,52 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentManager frm = getFragmentManager();
-        frm.beginTransaction().replace(R.id.container, new ItemFragment()).addToBackStack(null).commit();
-
+        final FragmentManager frm = getFragmentManager();
         AsyncHttpClient client = new AsyncHttpClient();
         //RequestParams rp = new RequestParams();
         //rp.put("params1", value1);
         //rp.put("params2", value2);
-        client.get("http://192.168.1.100:81/generaJSON.json",null, new JsonHttpResponseHandler(){
 
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
+        client.get("http://192.168.1.100:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                // super.onSuccess(statusCode, headers, response);
+
+                //Log.i("JSONREQUEST", response+"");
+
                 JSONObject firstEvent = null;
                 try {
-                    firstEvent = response.getJSONObject("generaJSON.json");
-                    String jsonText = firstEvent.getString("text");
 
-                    // Do something with the response
-                    System.out.println(jsonText);
+                    JSONArray rows = response.getJSONArray("grupos");
+
+                    //Log.i("ITEMS", rows.length()+"");
+                    //if(rows != null && rows.length() > 0){
+                        JSONObject item;
+                        DummyContent.DummyItem obj = null;
+
+                        for(int i = 0; i < rows.length(); i++){
+                            item = rows.getJSONObject(i);
+                            Log.i("ITEMS", item.getString("id"));
+
+                            obj = new DummyContent.DummyItem(item.getString("id"), item.getString("descrip"), "TEXTO ALTERNATIVO");
+                            //DummyContent.addItem(obj);
+                            DummyContent.ITEMS.add(obj);
+
+                        }
+                    //}
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }finally {
+                    Log.i("ITEMS", DummyContent.ITEMS.size()+"");
+                    frm.beginTransaction().replace(R.id.container, new ItemFragment()).addToBackStack(null).commit();
+
                 }
             }
         });
