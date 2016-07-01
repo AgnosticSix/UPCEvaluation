@@ -59,20 +59,21 @@ public class MainActivity extends AppCompatActivity
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        final FragmentManager frm = getFragmentManager();
+        FragmentManager frm = getFragmentManager();
+        frm.beginTransaction().replace(R.id.container, new ItemFragment()).addToBackStack(null).commit();
         AsyncHttpClient client = new AsyncHttpClient();
         //RequestParams rp = new RequestParams();
         //rp.put("params1", value1);
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.1.100:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+        client.get("http://192.168.1.70:81/generaJSON.php",null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
                 // super.onSuccess(statusCode, headers, response);
 
-                //Log.i("JSONREQUEST", response+"");
+                Log.i("JSONREQUEST", response+"");
 
                 JSONObject firstEvent = null;
                 try {
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
                     //Log.i("ITEMS", rows.length()+"");
                     //if(rows != null && rows.length() > 0){
-                        JSONObject item;
+                        /*JSONObject item;
                         DummyContent.DummyItem obj = null;
 
                         for(int i = 0; i < rows.length(); i++){
@@ -92,16 +93,12 @@ public class MainActivity extends AppCompatActivity
                             //DummyContent.addItem(obj);
                             DummyContent.ITEMS.add(obj);
 
-                        }
+                        }*/
                     //}
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }finally {
-                    Log.i("ITEMS", DummyContent.ITEMS.size()+"");
-                    frm.beginTransaction().replace(R.id.container, new ItemFragment()).addToBackStack(null).commit();
-
                 }
             }
         });
