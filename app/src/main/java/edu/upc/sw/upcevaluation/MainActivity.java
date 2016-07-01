@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.1.70:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+        client.get("http://192.168.43.128:81/generaJSON.php",null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {

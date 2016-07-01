@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper{
 
@@ -40,8 +41,12 @@ public class DBHandler extends SQLiteOpenHelper{
     public void addGrupo(Grupos grupos) {
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_IDASIGNATURA, grupos.get_idAsignatura());
-        values.put(COLUMN_DESCRIPCION, grupos.get_descripcion());
+        values.put(DBHandler.COLUMN_ID, "1");
+        values.put(DBHandler.COLUMN_IDASIGNATURA, "ingles1");
+        values.put(DBHandler.COLUMN_DESCRIPCION, "Inglés 1");
+        values.put(DBHandler.COLUMN_ID, "2");
+        values.put(DBHandler.COLUMN_IDASIGNATURA, "algebra1");
+        values.put(DBHandler.COLUMN_DESCRIPCION, "Algebra 1");
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -58,15 +63,15 @@ public class DBHandler extends SQLiteOpenHelper{
 
         Grupos grupos = new Grupos();
 
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
+        cursor.moveToFirst();
+        while(cursor.isAfterLast() == false) {
             grupos.set_id(Integer.parseInt(cursor.getString(0)));
             grupos.set_idAsignatura(cursor.getString(1));
             grupos.set_descripcion(cursor.getString(2));
-            cursor.close();
-        } else {
-            grupos = null;
+            cursor.moveToNext();
+            Log.i(TABLE_GRUPOS,COLUMN_ID +""+ COLUMN_IDASIGNATURA +""+ COLUMN_DESCRIPCION);
         }
+        cursor.close();
         db.close();
         return grupos;
     }
