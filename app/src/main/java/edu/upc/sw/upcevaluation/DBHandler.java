@@ -11,29 +11,44 @@ import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper{
 
+    private static String TAG = "DBHandler Test";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "UPCEvaluationDB.db";
 
-    public static final String QUERY = "";
+    public static final String DDL = "CREATE TABLE Persona(idPersona INTEGER PRIMARY KEY, nombre TEXT, apellidos TEXT);" +
+            "CREATE TABLE Alumnos(idMatricula INTEGER PRIMARY KEY, idPersona INTEGER, idCarrera INTEGER);" +
+            "CREATE TABLE Calificacion(idCalificacion INTEGER PRIMARY KEY, idEvidencia INTEGER, idCurso_Alumno INTEGER);" +
+            "CREATE TABLE Carrera(idCarrera INTEGER PRIMARY KEY, nombre TEXT);" +
+            "CREATE TABLE Curso(idCurso INTEGER PRIMARY KEY, idMateria INTEGER, idMaestro INTEGER);" +
+            "CREATE TABLE Curso_Alumno(idCurso_Alumno INTEGER PRIMARY KEY, idMatricula INTEGER, idCurso INTEGER);" +
+            "CREATE TABLE Evidencia(idEvidencia INTEGER PRIMARY KEY, idUnidad INTEGER, tipo TEXT, descripcion TEXT);" +
+            "CREATE TABLE Maestro(idMaestro INTEGER PRIMARY KEY, idPersona INTEGER, usuario TEXT, password TEXT);" +
+            "CREATE TABLE Materia(idMateria INTEGER PRIMARY KEY, nombre TEXT);" +
+            "CREATE TABLE Unidad(idUnidad INTEGER PRIMARY KEY, idMateria INTEGER, nombre TEXT);";
 
-    public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public DBHandler(Context context, String name, int version) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.i(TAG, "Creando instancia");
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_TABLES = QUERY;
-        /*String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
-                TABLE_GRUPOS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_IDASIGNATURA
-                + " TEXT," + COLUMN_DESCRIPCION + " INTEGER" + ")";*/
-        sqLiteDatabase.execSQL(CREATE_TABLES);
+        Log.i(TAG, "Creando instancia 2");
+        for (String s: DDL.split(";")) {
+            Log.i(TAG, s);
+            sqLiteDatabase.execSQL(s);
+        }
+    }
+
+    public static SQLiteDatabase getDB(Context ctx){
+        SQLiteOpenHelper db = new DBHandler(ctx, DATABASE_NAME, DATABASE_VERSION);
+        return db.getWritableDatabase();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS ");
-        onCreate(sqLiteDatabase);
+        /*sqLiteDatabase.execSQL("DROP TABLE IF EXISTS ");
+        onCreate(sqLiteDatabase);*/
     }
 
     public void addGrupo(Grupos grupos) {
@@ -52,7 +67,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public Grupos findGrupo(String groupname) {
+    /*public Grupos findGrupo(String groupname) {
         //String query = "Select * FROM " + TABLE_GRUPOS + " WHERE " + COLUMN_IDASIGNATURA + " =  \"" + groupname + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -72,9 +87,9 @@ public class DBHandler extends SQLiteOpenHelper{
         cursor.close();
         db.close();
         return grupos;
-    }
+    }*/
 
-    public boolean deleteGrupo(String groupname) {
+    /*public boolean deleteGrupo(String groupname) {
 
         boolean result = false;
 
@@ -95,5 +110,5 @@ public class DBHandler extends SQLiteOpenHelper{
         }
         db.close();
         return result;
-    }
+    }*/
 }

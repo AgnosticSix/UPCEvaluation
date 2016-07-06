@@ -1,6 +1,9 @@
 package edu.upc.sw.upcevaluation;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -78,25 +81,39 @@ public class MainActivity extends AppCompatActivity
                 JSONObject firstEvent = null;
                 try {
 
-                    JSONArray rows = response.getJSONArray("grupos");
+                    JSONArray rows = response.getJSONArray("Persona");
 
-                    //Log.i("ITEMS", rows.length()+"");
+                    Log.i("ITEMS", rows.length()+"");
                     //if(rows != null && rows.length() > 0){
-                        /*JSONObject item;
+                        JSONObject item;
                         DummyContent.DummyItem obj = null;
+                    SQLiteDatabase db = DBHandler.getDB(getApplicationContext());
+                    String query = "";
+
 
                         for(int i = 0; i < rows.length(); i++){
                             item = rows.getJSONObject(i);
-                            Log.i("ITEMS", item.getString("id"));
-
-                            obj = new DummyContent.DummyItem(item.getString("id"), item.getString("descrip"), "TEXTO ALTERNATIVO");
+                            Log.i("ITEMS", item.getString("idPersona"));
+                            //query = "insert into Persona values("+item.getString("idPersona") + ",'" + item.getString("nombre")+"','" + item.getString("apellidos")+"');";
+                            //obj = new DummyContent.DummyItem(item.getString("idPersona"), item.getString("nombre"), item.getString());
                             //DummyContent.addItem(obj);
-                            DummyContent.ITEMS.add(obj);
+                            //DummyContent.ITEMS.add(obj);
+                            //db.execSQL(query);
+                            //Log.i("Query: ",query);
 
-                        }*/
+                        }
                     //}
 
+                    String query2 = "select * from Persona";
+                    //db.execSQL(query2);
+                    Cursor curs = db.rawQuery(query2, null);
+                    curs.moveToFirst();
+                    while(curs.moveToNext()){
+                        Log.i("item: ", curs.getInt(1)+"");
+                    }
+                    curs.close();
 
+                    db.close();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
