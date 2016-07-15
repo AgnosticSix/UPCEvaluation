@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.1.70:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+        client.get("http://192.168.1.101:81/generaJSON.php",null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
@@ -78,10 +78,10 @@ public class MainActivity extends AppCompatActivity
 
                 Log.i("JSONREQUEST", response+"");
 
-                JSONObject firstEvent = null;
+
                 try {
 
-                    JSONArray rows = response.getJSONArray("cursos");
+                    JSONArray rows = response.getJSONArray("Profesor");
 
                     Log.i("ITEMS", rows.length()+"");
                     //if(rows != null && rows.length() > 0){
@@ -104,14 +104,14 @@ public class MainActivity extends AppCompatActivity
                         }*/
                     //}
 
-                    String query2 = "select * from profesor";
+                    /*String query2 = "select * from Profesor";
                     //db.execSQL(query2);
                     Cursor curs = db.rawQuery(query2, null);
                     curs.moveToFirst();
                     while(curs.moveToNext()){
                         Log.i("item: ", curs.getInt(1)+"");
                     }
-                    curs.close();
+                    curs.close();*/
 
                     db.close();
                 } catch (JSONException e) {
