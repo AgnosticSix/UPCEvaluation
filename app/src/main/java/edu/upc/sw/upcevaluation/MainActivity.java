@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.43.128:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+        client.get("http://192.168.1.70:81/generaJSON.php",null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
@@ -81,17 +81,17 @@ public class MainActivity extends AppCompatActivity
                 JSONObject firstEvent = null;
                 try {
 
-                    JSONArray rows = response.getJSONArray("Persona");
+                    JSONArray rows = response.getJSONArray("cursos");
 
                     Log.i("ITEMS", rows.length()+"");
                     //if(rows != null && rows.length() > 0){
                         JSONObject item;
                         DummyContent.DummyItem obj = null;
                     SQLiteDatabase db = DBHandler.getDB(getApplicationContext());
-                    String query = "";
 
 
-                        for(int i = 0; i < rows.length(); i++){
+
+                        /*for(int i = 0; i < rows.length(); i++){
                             item = rows.getJSONObject(i);
                             Log.i("ITEMS", item.getString("idPersona"));
                             //query = "insert into Persona values("+item.getString("idPersona") + ",'" + item.getString("nombre")+"','" + item.getString("apellidos")+"');";
@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity
                             //db.execSQL(query);
                             //Log.i("Query: ",query);
 
-                        }
+                        }*/
                     //}
 
-                    String query2 = "select * from Persona";
+                    String query2 = "select * from profesor";
                     //db.execSQL(query2);
                     Cursor curs = db.rawQuery(query2, null);
                     curs.moveToFirst();

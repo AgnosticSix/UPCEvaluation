@@ -15,16 +15,11 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "UPCEvaluationDB.db";
 
-    public static final String DDL = "CREATE TABLE Persona(idPersona INTEGER PRIMARY KEY, nombre TEXT, apellidos TEXT);" +
-            "CREATE TABLE Alumnos(idMatricula INTEGER PRIMARY KEY, idPersona INTEGER, idCarrera INTEGER);" +
-            "CREATE TABLE Calificacion(idCalificacion INTEGER PRIMARY KEY, idEvidencia INTEGER, idCurso_Alumno INTEGER);" +
-            "CREATE TABLE Carrera(idCarrera INTEGER PRIMARY KEY, nombre TEXT);" +
-            "CREATE TABLE Curso(idCurso INTEGER PRIMARY KEY, idMateria INTEGER, idMaestro INTEGER);" +
-            "CREATE TABLE Curso_Alumno(idCurso_Alumno INTEGER PRIMARY KEY, idMatricula INTEGER, idCurso INTEGER);" +
-            "CREATE TABLE Evidencia(idEvidencia INTEGER PRIMARY KEY, idUnidad INTEGER, tipo TEXT, descripcion TEXT);" +
-            "CREATE TABLE Maestro(idMaestro INTEGER PRIMARY KEY, idPersona INTEGER, usuario TEXT, password TEXT);" +
-            "CREATE TABLE Materia(idMateria INTEGER PRIMARY KEY, nombre TEXT);" +
-            "CREATE TABLE Unidad(idUnidad INTEGER PRIMARY KEY, idMateria INTEGER, nombre TEXT);";
+    /*public static final String DDL = "CREATE TABLE Profesor(id INTEGER PRIMARY KEY, idCurso INTEGER);" +
+            "CREATE TABLE Alumnos(idAlumno INTEGER PRIMARY KEY, nombre TEXT);"
+            "CREATE TABLE Cursos(idCurso INTEGER PRIMARY KEY, descripcion TEXT, hrIni TEXT, hrFin TEXT);";*/
+    public static final String delete = "drop table Persona;"+ "drop table Alumnos;"+ "drop table Calificacion;" + "drop table Carrera;"+
+            "drop table Curso;"+ "drop table Curso_Alumno;"+ "drop table Evidencia;"+ "drop table Maestro;"+ "drop table Materia;"+ "drop table Unidad;";
 
     public DBHandler(Context context, String name, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,9 +29,9 @@ public class DBHandler extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.i(TAG, "Creando instancia 2");
-        for (String s: DDL.split(";")) {
+        for (String s: delete.split(";")) {
             Log.i(TAG, s);
-            sqLiteDatabase.execSQL(s);
+            sqLiteDatabase.rawQuery(s,null);
         }
     }
 
@@ -54,12 +49,6 @@ public class DBHandler extends SQLiteOpenHelper{
     public void addGrupo(Grupos grupos) {
 
         ContentValues values = new ContentValues();
-        /*values.put(DBHandler.COLUMN_ID, "1");
-        values.put(DBHandler.COLUMN_IDASIGNATURA, "ingles1");
-        values.put(DBHandler.COLUMN_DESCRIPCION, "Inglés 1");
-        values.put(DBHandler.COLUMN_ID, "2");
-        values.put(DBHandler.COLUMN_IDASIGNATURA, "algebra1");
-        values.put(DBHandler.COLUMN_DESCRIPCION, "Algebra 1");*/
 
         SQLiteDatabase db = this.getWritableDatabase();
 
