@@ -70,56 +70,60 @@ public class MainActivity extends AppCompatActivity
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.1.101:81/generaJSON.php",null, new JsonHttpResponseHandler(){
+        client.get("http://192.168.1.108:81/generaJSON.php", null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
                 // super.onSuccess(statusCode, headers, response);
 
-                Log.i("JSONREQUEST", response+"");
+                Log.i("JSONREQUEST", response + "");
 
 
                 try {
 
                     JSONArray rows = response.getJSONArray("Profesor");
 
-                    Log.i("ITEMS", rows.length()+"");
-                    //if(rows != null && rows.length() > 0){
+                    Log.i("ITEMS", rows.length() + "");
+                    //if (rows != null && rows.length() > 0) {
                         JSONObject item;
                         DummyContent.DummyItem obj = null;
-                    SQLiteDatabase db = DBHandler.getDB(getApplicationContext());
+                        SQLiteDatabase db = DBHandler.getDB(getApplicationContext());
 
 
-
-                        /*for(int i = 0; i < rows.length(); i++){
+                        /*for (int i = 0; i < rows.length(); i++) {
                             item = rows.getJSONObject(i);
-                            Log.i("ITEMS", item.getString("idPersona"));
-                            //query = "insert into Persona values("+item.getString("idPersona") + ",'" + item.getString("nombre")+"','" + item.getString("apellidos")+"');";
-                            //obj = new DummyContent.DummyItem(item.getString("idPersona"), item.getString("nombre"), item.getString());
-                            //DummyContent.addItem(obj);
-                            //DummyContent.ITEMS.add(obj);
-                            //db.execSQL(query);
-                            //Log.i("Query: ",query);
+                            Log.i("ITEMS", item.getString("idProfesor"));
+                            String query = "insert into Profesor values("+item.getString("idProfesor") + ",'" + item.getString("nombre")+");"+
+                                    "insert into Cursos values("+item.getString("idCurso")+ "," + item.getString("idProfesor") + ",'" +
+                                    item.getString("descripcion")+ "','" + item.getString("hrIni")+ "','"+ item.getString("hrFin") + "';," +
+                                    item.getString("idAlumno");
+                            obj = new DummyContent.DummyItem(item.getString("idProfesor"), item.getString("nombre"), null);
+                            DummyContent.addItem(obj);
+                            DummyContent.ITEMS.add(obj);
+                            db.execSQL(query);
+                            Log.i("Query: ",query);
 
                         }*/
+                        //}
+
+                        /*String query2 = "select * from Profesor";
+                        //db.execSQL(query2);
+                        Cursor curs = db.rawQuery(query2, null);
+                        curs.moveToFirst();
+                        while (curs.moveToNext()) {
+                            Log.i("item: ", curs.getInt(1) + "");
+                        }
+                        curs.close();*/
+
+                        db.close();
                     //}
-
-                    /*String query2 = "select * from Profesor";
-                    //db.execSQL(query2);
-                    Cursor curs = db.rawQuery(query2, null);
-                    curs.moveToFirst();
-                    while(curs.moveToNext()){
-                        Log.i("item: ", curs.getInt(1)+"");
-                    }
-                    curs.close();*/
-
-                    db.close();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

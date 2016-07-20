@@ -18,8 +18,6 @@ public class DBHandler extends SQLiteOpenHelper{
     public static final String DDL = "CREATE TABLE Profesor(idProfesor INTEGER PRIMARY KEY, nombre TEXT);" +
             "CREATE TABLE Alumnos(idAlumno INTEGER PRIMARY KEY, nombre TEXT, idCurso INTEGER);" +
             "CREATE TABLE Cursos(idCurso INTEGER PRIMARY KEY, idProfesor INTEGER, descripcion TEXT, hrIni TEXT, hrFin TEXT);";
-    //public static final String delete = "drop table Persona;"+ "drop table Alumnos;"+ "drop table Calificacion;" + "drop table Carrera;"+
-            //"drop table Curso;"+ "drop table Curso_Alumno;"+ "drop table Evidencia;"+ "drop table Maestro;"+ "drop table Materia;"+ "drop table Unidad;";
 
     public DBHandler(Context context, String name, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
