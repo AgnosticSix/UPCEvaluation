@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.entity.mime.Header;
 import edu.upc.sw.upcevaluation.dummy.DummyContent;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -70,41 +69,65 @@ public class MainActivity extends AppCompatActivity
         //rp.put("params2", value2);
 
         DummyContent.ITEMS = new ArrayList<DummyContent.DummyItem>();
-        client.get("http://192.168.1.100:81/generaJSON.php", null, new JsonHttpResponseHandler() {
+        client.get("http://192.168.43.128:81/generaJSON.php", null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
-                // super.onSuccess(statusCode, headers, response);
+                //super.onSuccess(statusCode, headers, response);
 
                 Log.i("JSONREQUEST", response + "");
 
-
                 try {
 
-                    JSONArray rows = response.getJSONArray("Profesor");
+                    JSONArray pro = response.getJSONArray("Profesor");
 
-                    Log.i("ITEMS", rows.length() + "");
-                    if (rows != null && rows.length() > 0) {
+                    //Log.i("ITEMS", rows.length() + "");
+                    if (pro != null && pro.length() > 0) {
                         JSONObject item;
                         DummyContent.DummyItem obj = null;
                         SQLiteDatabase db = DBHandler.getDB(getApplicationContext());
 
-
-                        for (int i = 0; i < rows.length(); i++) {
-                            item = rows.getJSONObject(i);
+                        for (int i = 0; i < pro.length(); i++) {
+                            item = pro.getJSONObject(i);
                             Log.i("ITEMS", item.getString("idProfesor"));
-                            String query = "insert into Profesor values(" + item.getString("idProfesor") + ",'" + item.getString("nombre") + ");" +
-                                    "insert into Cursos values(" + item.getString("idCurso") + "," + item.getString("idProfesor") + ",'" +
-                                    item.getString("descripcion") + "','" + item.getString("hrIni") + "','" + item.getString("hrFin") + "';," +
-                                    item.getString("idAlumno");
+                            //Log.i("ITEMs", item.getString("idCurso"));
+                            String query = "insert into Profesor values(" + item.getString("idProfesor") + ",'" + item.getString("nombre") + "');";
+
+                            JSONArray cur = new JSONArray(pro.getJSONObject(i).getString("Cursos"));
                             obj = new DummyContent.DummyItem(item.getString("idProfesor"), item.getString("nombre"), null);
                             DummyContent.addItem(obj);
                             DummyContent.ITEMS.add(obj);
                             db.execSQL(query);
+
+                            String prof = item.getString("idProfesor");
+
+                            for(int j = 0; j < cur.length(); j++){
+                                item = cur.getJSONObject(j);
+                                String query2 = "insert into Cursos values(" + item.getString("idCurso") + "," + prof + ","+ item.getString("grado") + ",'" +
+                                        item.getString("descripcion") + "','" + item.getString("hrIni") + "','" + item.getString("hrFin") +"');";
+
+                                JSONArray alum = new JSONArray(cur.getJSONObject(j).getString("Alumnos"));
+
+                                obj = new DummyContent.DummyItem(item.getString("idProfesor"), item.getString("nombre"), null);
+                                DummyContent.addItem(obj);
+                                DummyContent.ITEMS.add(obj);
+                                db.execSQL(query2);
+
+                                for(int k = 0; k < alum.length(); k++){
+                                    item = alum.getJSONObject(k);
+                                    String query3 = "insert into Alumnos values(" + item.getString("matricula") + ",'" + item.getString("nombre") + "');";
+                                    obj = new DummyContent.DummyItem(item.getString("idProfesor"), item.getString("nombre"), null);
+                                    DummyContent.addItem(obj);
+                                    DummyContent.ITEMS.add(obj);
+                                    db.execSQL(query3);
+                                }
+                            }
+
+
+
                             Log.i("Query: ", query);
 
                         }
-
 
                         String query2 = "select * from Profesor";
                         Cursor curs = db.rawQuery(query2, null);
@@ -122,7 +145,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
 
     @Override
     public void onBackPressed() {
